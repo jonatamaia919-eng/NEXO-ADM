@@ -3,17 +3,29 @@ export interface User {
   id: string;
   name: string;
   email: string;
+  phone?: string;
   password: string;
   active: boolean;
   role: 'admin' | 'user';
+  hasPaid?: boolean;
+  onboardingComplete?: boolean;
 }
 
 export enum AppRoute {
-  APP_LOGIN = 'APP_LOGIN',
+  SWITCHER = 'SWITCHER',
+  REGISTRATION = 'REGISTRATION',
+  ONBOARDING = 'ONBOARDING',
+  PAYMENT = 'PAYMENT',
   APP_DASHBOARD = 'APP_DASHBOARD',
   ADMIN_LOGIN = 'ADMIN_LOGIN',
-  ADMIN_DASHBOARD = 'ADMIN_DASHBOARD',
-  SWITCHER = 'SWITCHER'
+  ADMIN_DASHBOARD = 'ADMIN_DASHBOARD'
+}
+
+export interface BankAccount {
+  id: string;
+  bankName: string;
+  balance: number;
+  color: string;
 }
 
 export interface Transaction {
