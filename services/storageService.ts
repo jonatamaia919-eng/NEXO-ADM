@@ -14,6 +14,11 @@ export const storageService = {
 
   createUser: (user: User) => {
     const users = storageService.getUsers();
+    // Prevenção de duplicatas simples
+    if (users.some(u => u.email === user.email)) {
+      alert('E-mail já cadastrado no sistema.');
+      return;
+    }
     users.push(user);
     storageService.setUsers(users);
   },
@@ -47,6 +52,12 @@ export const storageService = {
     const users = storageService.getUsers();
     const filtered = users.filter(u => u.id !== id);
     storageService.setUsers(filtered);
+    
+    // Se o usuário deletado for o da sessão atual, encerra a sessão
+    const currentSession = storageService.getSession();
+    if (currentSession && currentSession.id === id) {
+      storageService.clearSession();
+    }
   },
 
   getSession: (): User | null => {
