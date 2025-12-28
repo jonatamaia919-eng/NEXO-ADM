@@ -21,24 +21,25 @@ export const AppDashboard: React.FC<AppDashboardProps> = ({ user, onLogout }) =>
           <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
             <i className="fa-solid fa-bolt text-white"></i>
           </div>
-          <span className="text-xl font-bold text-slate-900 tracking-tight">NEXO APP</span>
+          <span className="text-xl font-black text-slate-900 tracking-tighter">NEXO</span>
         </div>
         
         <nav className="flex-1 px-4 space-y-1">
           {[
-            { id: 'overview', icon: 'fa-chart-pie', label: 'Visão Geral' },
-            { id: 'accounts', icon: 'fa-building-columns', label: 'Contas' },
-            { id: 'transactions', icon: 'fa-list-ul', label: 'Transações' },
-            { id: 'cards', icon: 'fa-credit-card', label: 'Meus Cartões' },
-            { id: 'settings', icon: 'fa-sliders', label: 'Configurações' }
+            { id: 'overview', icon: 'fa-chart-pie', label: 'Início' },
+            { id: 'accounts', icon: 'fa-building-columns', label: 'Minhas Contas' },
+            { id: 'transactions', icon: 'fa-list-ul', label: 'Histórico' },
+            { id: 'cards', icon: 'fa-credit-card', label: 'Cartões' },
+            { id: 'invest', icon: 'fa-arrow-trend-up', label: 'Investimentos' },
+            { id: 'settings', icon: 'fa-sliders', label: 'Ajustes' }
           ].map(item => (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
                 activeTab === item.id 
-                  ? 'bg-indigo-50 text-indigo-700' 
-                  : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
+                  ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200' 
+                  : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
               }`}
             >
               <i className={`fa-solid ${item.icon} w-5`}></i>
@@ -48,190 +49,203 @@ export const AppDashboard: React.FC<AppDashboardProps> = ({ user, onLogout }) =>
         </nav>
 
         <div className="p-4 border-t border-slate-100">
-          <div className="bg-slate-50 p-4 rounded-xl flex items-center gap-3 mb-4">
+          <div className="bg-slate-50 p-4 rounded-2xl flex items-center gap-3 mb-4">
             <div className="w-10 h-10 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center font-bold">
               {user.name.charAt(0)}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-slate-900 truncate">{user.name}</p>
-              <p className="text-xs text-slate-500 truncate">{user.email}</p>
+              <p className="text-sm font-bold text-slate-900 truncate">{user.name}</p>
+              <p className="text-xs text-slate-500 truncate capitalize">{user.role}</p>
             </div>
           </div>
-          <Button variant="ghost" className="w-full justify-start text-slate-500 hover:text-rose-600" onClick={onLogout}>
-            <i className="fa-solid fa-arrow-right-from-bracket mr-2"></i>
-            Sair
-          </Button>
+          <button 
+            onClick={onLogout}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-rose-500 hover:bg-rose-50 transition-colors"
+          >
+            <i className="fa-solid fa-power-off"></i>
+            Encerrar Sessão
+          </button>
         </div>
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 overflow-y-auto p-4 md:p-8">
-        <header className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <main className="flex-1 overflow-y-auto p-6 md:p-10">
+        <header className="mb-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Bem-vindo ao NEXO, {user.name.split(' ')[0]}!</h1>
-            <p className="text-slate-500">Aqui está o resumo da sua vida financeira hoje.</p>
+            <h1 className="text-3xl font-black text-slate-900">Olá, {user.name.split(' ')[0]}! 👋</h1>
+            <p className="text-slate-500 font-medium">Sua saúde financeira está <span className="text-emerald-600 font-bold">Excelente (92/100)</span>.</p>
           </div>
-          <div className="flex gap-3 w-full md:w-auto">
-            <Button variant="secondary" className="flex-1 md:flex-none">
-              <i className="fa-solid fa-download mr-2"></i>
-              Relatório
-            </Button>
-            <Button variant="primary" className="flex-1 md:flex-none">
-              <i className="fa-solid fa-plus mr-2"></i>
-              Nova Transferência
-            </Button>
+          <div className="flex gap-4 w-full lg:w-auto">
+            <div className="relative flex-1 lg:flex-none">
+              <i className="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+              <input type="text" placeholder="Buscar..." className="pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 w-full" />
+            </div>
+            <button className="w-12 h-12 bg-white border border-slate-200 rounded-2xl flex items-center justify-center text-slate-600 relative">
+              <i className="fa-solid fa-bell"></i>
+              <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-rose-500 border-2 border-white rounded-full"></span>
+            </button>
           </div>
         </header>
 
-        {/* Overview Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-            <div className="flex justify-between items-start mb-4">
-              <div className="p-2 bg-emerald-50 text-emerald-600 rounded-lg">
-                <i className="fa-solid fa-wallet text-xl"></i>
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+          <div className="xl:col-span-2 space-y-8">
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="bg-indigo-600 p-8 rounded-[2.5rem] shadow-xl shadow-indigo-100 text-white relative overflow-hidden group">
+                <div className="relative z-10">
+                  <p className="text-indigo-100 text-sm font-bold mb-1 opacity-80">Saldo Consolidado</p>
+                  <h2 className="text-4xl font-black mb-6">R$ 12.450,80</h2>
+                  <div className="flex gap-2">
+                    <Button variant="ghost" size="sm" className="bg-white/10 hover:bg-white/20 text-white border-transparent">
+                      Depositar
+                    </Button>
+                    <Button variant="ghost" size="sm" className="bg-white/10 hover:bg-white/20 text-white border-transparent">
+                      Extrato
+                    </Button>
+                  </div>
+                </div>
+                <i className="fa-solid fa-wallet absolute -right-4 -bottom-4 text-9xl text-white/10 rotate-12 group-hover:rotate-0 transition-transform"></i>
               </div>
-              <span className="text-xs font-bold text-emerald-600">+12% vs mês ant.</span>
-            </div>
-            <p className="text-sm text-slate-500 mb-1">Saldo Disponível</p>
-            <h2 className="text-3xl font-bold text-slate-900">R$ 12.450,80</h2>
-          </div>
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-            <div className="flex justify-between items-start mb-4">
-              <div className="p-2 bg-rose-50 text-rose-600 rounded-lg">
-                <i className="fa-solid fa-arrow-trend-down text-xl"></i>
+              
+              <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">
+                <div className="flex justify-between items-start mb-6">
+                  <div className="p-3 bg-rose-50 text-rose-600 rounded-2xl">
+                    <i className="fa-solid fa-chart-line text-2xl"></i>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xs font-black text-rose-500">↑ 12%</p>
+                    <p className="text-[10px] text-slate-400 uppercase font-bold">vs ontem</p>
+                  </div>
+                </div>
+                <p className="text-slate-500 text-sm font-bold mb-1">Gastos Variáveis</p>
+                <h2 className="text-3xl font-black text-slate-900">R$ 2.140,00</h2>
               </div>
-              <span className="text-xs font-bold text-rose-600">-2.4% vs mês ant.</span>
             </div>
-            <p className="text-sm text-slate-500 mb-1">Total Gastos (Mês)</p>
-            <h2 className="text-3xl font-bold text-slate-900">R$ 3.840,15</h2>
-          </div>
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-            <div className="flex justify-between items-start mb-4">
-              <div className="p-2 bg-indigo-50 text-indigo-600 rounded-lg">
-                <i className="fa-solid fa-piggy-bank text-xl"></i>
-              </div>
-              <span className="text-xs font-bold text-indigo-600">+R$ 450,00</span>
-            </div>
-            <p className="text-sm text-slate-500 mb-1">Economias</p>
-            <h2 className="text-3xl font-bold text-slate-900">R$ 45.200,00</h2>
-          </div>
-        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Chart Section */}
-          <div className="lg:col-span-2 space-y-8">
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="font-bold text-slate-900">Fluxo de Caixa</h3>
-                <select className="bg-slate-50 border-none text-xs font-bold px-3 py-1.5 rounded-lg outline-none">
-                  <option>Últimos 6 meses</option>
-                  <option>Últimos 12 meses</option>
-                </select>
+            {/* Main Chart */}
+            <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">
+              <div className="flex justify-between items-center mb-8">
+                <h3 className="font-black text-slate-900 text-xl tracking-tight">Performance Mensal</h3>
+                <div className="flex gap-2">
+                  <button className="px-3 py-1.5 bg-slate-50 text-slate-600 rounded-lg text-xs font-bold">D</button>
+                  <button className="px-3 py-1.5 bg-indigo-600 text-white rounded-lg text-xs font-bold shadow-lg shadow-indigo-100">M</button>
+                  <button className="px-3 py-1.5 bg-slate-50 text-slate-600 rounded-lg text-xs font-bold">A</button>
+                </div>
               </div>
-              <div className="h-64 w-full">
+              <div className="h-72">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={MOCK_CHART_DATA}>
                     <defs>
-                      <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.1}/>
+                      <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.2}/>
                         <stop offset="95%" stopColor="#4f46e5" stopOpacity={0}/>
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 12, fill: '#64748b'}} />
-                    <YAxis hide />
-                    <Tooltip />
-                    <Area type="monotone" dataKey="value" stroke="#4f46e5" strokeWidth={2} fillOpacity={1} fill="url(#colorValue)" />
+                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 12, fontWeight: 600, fill: '#94a3b8'}} />
+                    <Tooltip 
+                      contentStyle={{ borderRadius: '20px', border: 'none', boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)' }}
+                    />
+                    <Area type="monotone" dataKey="value" stroke="#4f46e5" strokeWidth={4} fill="url(#chartGradient)" dot={{ r: 4, fill: '#4f46e5' }} activeDot={{ r: 8, strokeWidth: 0 }} />
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
             </div>
 
-            {/* Recent Transactions */}
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-              <div className="p-6 border-b border-slate-50 flex justify-between items-center">
-                <h3 className="font-bold text-slate-900">Transações Recentes</h3>
-                <button className="text-xs font-bold text-indigo-600 hover:underline">Ver todas</button>
+            {/* Transactions */}
+            <div className="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden">
+              <div className="p-8 border-b border-slate-50 flex justify-between items-center">
+                <h3 className="font-black text-slate-900 text-xl tracking-tight">Atividades</h3>
+                <button className="text-sm font-bold text-indigo-600 hover:text-indigo-800 transition-colors">Ver Completo</button>
               </div>
               <div className="divide-y divide-slate-50">
                 {MOCK_TRANSACTIONS.map(tx => (
-                  <div key={tx.id} className="p-4 flex items-center justify-between hover:bg-slate-50/50 transition-colors">
-                    <div className="flex items-center gap-4">
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${tx.type === 'credit' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'}`}>
-                        <i className={`fa-solid ${tx.type === 'credit' ? 'fa-arrow-up' : 'fa-arrow-down'}`}></i>
+                  <div key={tx.id} className="p-6 flex items-center justify-between hover:bg-slate-50 transition-colors group">
+                    <div className="flex items-center gap-5">
+                      <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-xl transition-transform group-hover:scale-110 ${tx.type === 'credit' ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-600'}`}>
+                        <i className={`fa-solid ${tx.type === 'credit' ? 'fa-arrow-down-left' : 'fa-bag-shopping'}`}></i>
                       </div>
                       <div>
-                        <p className="font-semibold text-slate-900 text-sm">{tx.description}</p>
-                        <p className="text-xs text-slate-500">{tx.category} • {new Date(tx.date).toLocaleDateString()}</p>
+                        <p className="font-black text-slate-900">{tx.description}</p>
+                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">{tx.category} • {tx.date}</p>
                       </div>
                     </div>
-                    <p className={`font-bold ${tx.type === 'credit' ? 'text-emerald-600' : 'text-slate-900'}`}>
-                      {tx.type === 'credit' ? '+' : '-'} R$ {tx.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                    </p>
+                    <div className="text-right">
+                      <p className={`text-lg font-black ${tx.type === 'credit' ? 'text-emerald-600' : 'text-slate-900'}`}>
+                        {tx.type === 'credit' ? '+' : '-'} R$ {tx.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                      </p>
+                      <p className="text-[10px] font-bold text-slate-400 uppercase">Confirmado</p>
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* Side Content */}
-          <div className="space-y-6">
-            <div className="bg-slate-900 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden">
-              <div className="relative z-10">
-                <p className="text-xs font-medium text-slate-400 mb-1 uppercase tracking-widest">Nexo Platinum</p>
-                <div className="flex justify-between items-center mb-8">
-                  <i className="fa-solid fa-microchip text-3xl text-amber-400"></i>
-                  <i className="fa-brands fa-cc-mastercard text-3xl opacity-80"></i>
+          <div className="space-y-8">
+            {/* Credit Card Card */}
+            <div className="bg-slate-900 p-8 rounded-[2.5rem] shadow-2xl relative overflow-hidden text-white aspect-[1.6/1] flex flex-col justify-between">
+              <div className="flex justify-between items-start relative z-10">
+                <div className="flex gap-1.5">
+                  <div className="w-8 h-8 bg-white/20 rounded-full blur-md"></div>
+                  <div className="w-8 h-8 bg-indigo-500/40 rounded-full blur-md -ml-4"></div>
                 </div>
-                <h4 className="text-xl font-mono mb-6">**** **** **** 8824</h4>
-                <div className="flex justify-between">
+                <span className="text-[10px] font-black uppercase tracking-widest opacity-60">Platinum Member</span>
+              </div>
+              <div className="relative z-10">
+                <p className="text-2xl font-mono tracking-[0.3em] mb-4">**** **** **** 4242</p>
+                <div className="flex justify-between items-end">
                   <div>
-                    <p className="text-[10px] text-slate-400 uppercase">Portador</p>
-                    <p className="text-sm font-semibold">{user.name.toUpperCase()}</p>
+                    <p className="text-[10px] uppercase opacity-40 font-bold mb-1">Portador</p>
+                    <p className="font-bold text-sm tracking-tight">{user.name.toUpperCase()}</p>
                   </div>
-                  <div className="text-right">
-                    <p className="text-[10px] text-slate-400 uppercase">Validade</p>
-                    <p className="text-sm font-semibold">12/28</p>
-                  </div>
+                  <i className="fa-brands fa-cc-mastercard text-4xl opacity-80"></i>
                 </div>
               </div>
-              <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-indigo-600 rounded-full blur-3xl opacity-20"></div>
+              <div className="absolute -right-20 -bottom-20 w-60 h-60 bg-indigo-600 rounded-full blur-[80px] opacity-30"></div>
             </div>
 
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-              <h3 className="font-bold text-slate-900 mb-4">Metas de Economia</h3>
-              <div className="space-y-4">
+            {/* Tips & News */}
+            <div className="bg-indigo-50 p-8 rounded-[2.5rem] border border-indigo-100">
+              <h4 className="font-black text-indigo-900 text-lg mb-6">Nexo Academy 🎓</h4>
+              <div className="space-y-6">
+                <div className="bg-white p-5 rounded-3xl shadow-sm border border-indigo-100 cursor-pointer hover:border-indigo-300 transition-colors group">
+                  <p className="text-xs font-black text-indigo-500 uppercase mb-2">Dica de Hoje</p>
+                  <p className="text-sm font-bold text-slate-800 group-hover:text-indigo-700 transition-colors leading-relaxed">Como diversificar sua carteira em tempos de inflação alta.</p>
+                </div>
+                <div className="bg-white p-5 rounded-3xl shadow-sm border border-indigo-100 cursor-pointer hover:border-indigo-300 transition-colors group">
+                  <p className="text-xs font-black text-emerald-500 uppercase mb-2">Novidade</p>
+                  <p className="text-sm font-bold text-slate-800 group-hover:text-indigo-700 transition-colors leading-relaxed">O Pix Automático agora está disponível na Nexo!</p>
+                </div>
+              </div>
+              <Button variant="primary" className="w-full mt-8 rounded-2xl h-12 shadow-indigo-200 shadow-xl">
+                Acessar Portal
+              </Button>
+            </div>
+
+            {/* Savings Goals */}
+            <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">
+              <h3 className="font-black text-slate-900 text-lg mb-6 tracking-tight">Metas de Economia</h3>
+              <div className="space-y-6">
                 <div>
-                  <div className="flex justify-between text-xs mb-1.5">
-                    <span className="font-medium text-slate-600">Viagem Europa</span>
-                    <span className="text-slate-900 font-bold">75%</span>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm font-bold text-slate-600">iPhone 16 Pro</span>
+                    <span className="text-sm font-black text-slate-900">45%</span>
                   </div>
-                  <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                    <div className="bg-indigo-600 h-full rounded-full" style={{ width: '75%' }}></div>
+                  <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-indigo-600 rounded-full w-[45%]"></div>
                   </div>
                 </div>
                 <div>
-                  <div className="flex justify-between text-xs mb-1.5">
-                    <span className="font-medium text-slate-600">Fundo de Emergência</span>
-                    <span className="text-slate-900 font-bold">40%</span>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm font-bold text-slate-600">Férias na Grécia</span>
+                    <span className="text-sm font-black text-slate-900">12%</span>
                   </div>
-                  <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                    <div className="bg-emerald-500 h-full rounded-full" style={{ width: '40%' }}></div>
-                  </div>
-                </div>
-                <div>
-                  <div className="flex justify-between text-xs mb-1.5">
-                    <span className="font-medium text-slate-600">Novo Carro</span>
-                    <span className="text-slate-900 font-bold">12%</span>
-                  </div>
-                  <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                    <div className="bg-amber-500 h-full rounded-full" style={{ width: '12%' }}></div>
+                  <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-emerald-500 rounded-full w-[12%]"></div>
                   </div>
                 </div>
               </div>
-              <Button variant="ghost" className="w-full mt-6 text-indigo-600 text-xs font-bold uppercase tracking-wider">
-                Ver Todas as Metas
-              </Button>
             </div>
           </div>
         </div>

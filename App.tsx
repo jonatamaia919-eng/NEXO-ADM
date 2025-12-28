@@ -72,7 +72,7 @@ const App: React.FC = () => {
         setEmail('');
         setPassword('');
       } else {
-        setError('Credenciais administrativas incorretas ou acesso negado');
+        setError('Credenciais administrativas incorretas');
         setIsLoading(false);
       }
     }, 800);
@@ -86,111 +86,172 @@ const App: React.FC = () => {
     setError('');
   };
 
+  // LANDING PAGE COMPONENT
   if (currentRoute === AppRoute.SWITCHER) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center p-6 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-indigo-900/40 via-slate-950 to-slate-950">
-        <div className="max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-slate-900/50 border border-slate-800 p-8 rounded-3xl backdrop-blur-sm flex flex-col items-center text-center transition-all hover:scale-[1.02] hover:border-indigo-500/50">
-            <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mb-6 shadow-xl shadow-indigo-500/20">
-              <i className="fa-solid fa-bolt text-3xl text-white"></i>
+      <div className="min-h-screen bg-slate-950 text-white selection:bg-indigo-500/30">
+        {/* Navigation */}
+        <nav className="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center border-b border-white/5">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+              <i className="fa-solid fa-bolt text-white"></i>
             </div>
-            <h2 className="text-2xl font-bold text-white mb-2">Nexo App</h2>
-            <p className="text-slate-400 mb-8 text-sm">Acesse sua carteira digital, acompanhe seus gastos e gerencie seus investimentos.</p>
-            <Button variant="primary" size="lg" className="w-full" onClick={() => setCurrentRoute(AppRoute.APP_LOGIN)}>
-              Entrar como Usuário
+            <span className="text-xl font-black tracking-tighter">NEXO</span>
+          </div>
+          <div className="hidden md:flex gap-8 text-sm font-medium text-slate-400">
+            <a href="#" className="hover:text-white transition-colors">Produtos</a>
+            <a href="#" className="hover:text-white transition-colors">Segurança</a>
+            <a href="#" className="hover:text-white transition-colors">Empresa</a>
+          </div>
+          <div className="flex gap-4">
+            <button 
+              onClick={() => setCurrentRoute(AppRoute.ADMIN_LOGIN)}
+              className="text-sm font-semibold text-slate-400 hover:text-white transition-colors px-4 py-2"
+            >
+              Admin
+            </button>
+            <Button variant="primary" size="sm" onClick={() => setCurrentRoute(AppRoute.APP_LOGIN)}>
+              Acessar Conta
             </Button>
+          </div>
+        </nav>
+
+        {/* Hero Section */}
+        <main className="max-w-7xl mx-auto px-6 pt-20 pb-32 text-center md:text-left grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="animate-in fade-in slide-in-from-left-8 duration-700">
+            <div className="inline-block px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 rounded-full text-indigo-400 text-xs font-bold mb-6 tracking-wider uppercase">
+              O Futuro das Finanças Chegou
+            </div>
+            <h1 className="text-5xl md:text-7xl font-black leading-tight mb-6">
+              Gerencie seu <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-violet-400">patrimônio</span> com inteligência.
+            </h1>
+            <p className="text-lg text-slate-400 mb-10 max-w-xl">
+              Nexo é o ecossistema financeiro completo para quem busca controle total, segurança de nível bancário e uma experiência de usuário sem precedentes.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button variant="primary" size="lg" className="h-14 px-8 text-lg" onClick={() => setCurrentRoute(AppRoute.APP_LOGIN)}>
+                Começar Agora
+                <i className="fa-solid fa-arrow-right ml-2"></i>
+              </Button>
+              <Button variant="ghost" size="lg" className="h-14 px-8 text-lg border border-white/10 hover:bg-white/5">
+                Saiba Mais
+              </Button>
+            </div>
+            <div className="mt-12 flex items-center gap-6 grayscale opacity-50">
+              <i className="fa-brands fa-apple text-3xl"></i>
+              <i className="fa-brands fa-google-pay text-4xl"></i>
+              <i className="fa-brands fa-visa text-4xl"></i>
+              <i className="fa-brands fa-mastercard text-4xl"></i>
+            </div>
           </div>
 
-          <div className="bg-slate-900/50 border border-slate-800 p-8 rounded-3xl backdrop-blur-sm flex flex-col items-center text-center transition-all hover:scale-[1.02] hover:border-slate-400/50">
-            <div className="w-16 h-16 bg-slate-700 rounded-2xl flex items-center justify-center mb-6 shadow-xl shadow-black/20">
-              <i className="fa-solid fa-shield-halved text-3xl text-white"></i>
+          <div className="relative animate-in fade-in slide-in-from-right-8 duration-1000">
+            <div className="absolute -top-20 -right-20 w-80 h-80 bg-indigo-600/20 rounded-full blur-[120px]"></div>
+            <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-violet-600/10 rounded-full blur-[100px]"></div>
+            
+            <div className="relative bg-slate-900 border border-white/10 p-2 rounded-[2.5rem] shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-500">
+              <img 
+                src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=800" 
+                alt="Dashboard Preview" 
+                className="rounded-[2.2rem] shadow-inner"
+              />
+              <div className="absolute -bottom-6 -right-6 bg-white text-slate-950 p-6 rounded-3xl shadow-2xl animate-bounce duration-[3000ms]">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center">
+                    <i className="fa-solid fa-check"></i>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-slate-500 uppercase tracking-tighter">Recebido</p>
+                    <p className="text-lg font-black">+ R$ 4.500,00</p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <h2 className="text-2xl font-bold text-white mb-2">Nexo Admin</h2>
-            <p className="text-slate-400 mb-8 text-sm">Portal administrativo para gerenciamento de usuários, segurança e configurações globais.</p>
-            <Button variant="secondary" size="lg" className="w-full" onClick={() => setCurrentRoute(AppRoute.ADMIN_LOGIN)}>
-              Painel Administrativo
-            </Button>
           </div>
-        </div>
+        </main>
+
+        {/* Footer */}
+        <footer className="max-w-7xl mx-auto px-6 py-12 border-t border-white/5 text-slate-500 text-sm flex flex-col md:flex-row justify-between items-center gap-6">
+          <p>© 2024 Nexo Financial Ecosystem. Todos os direitos reservados.</p>
+          <div className="flex gap-8">
+            <a href="#" className="hover:text-white transition-colors">Termos de Uso</a>
+            <a href="#" className="hover:text-white transition-colors">Privacidade</a>
+            <a href="#" className="hover:text-white transition-colors">Contato</a>
+          </div>
+        </footer>
       </div>
     );
   }
 
+  // LOGIN SCREENS
   if (currentRoute === AppRoute.APP_LOGIN || currentRoute === AppRoute.ADMIN_LOGIN) {
     const isAdmin = currentRoute === AppRoute.ADMIN_LOGIN;
     return (
       <div className={`min-h-screen flex items-center justify-center p-6 ${isAdmin ? 'bg-slate-950' : 'bg-slate-50'}`}>
         <div className={`max-w-md w-full p-8 rounded-3xl shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-500 ${isAdmin ? 'bg-slate-900 text-white border border-slate-800' : 'bg-white text-slate-900'}`}>
-          <button onClick={() => setCurrentRoute(AppRoute.SWITCHER)} className="mb-6 text-slate-500 hover:text-indigo-600 flex items-center gap-2 text-sm font-medium transition-colors">
+          <button onClick={() => setCurrentRoute(AppRoute.SWITCHER)} className="mb-6 text-slate-400 hover:text-indigo-600 flex items-center gap-2 text-sm font-medium transition-colors">
             <i className="fa-solid fa-arrow-left"></i>
-            Voltar
+            Voltar para o site
           </button>
           
           <div className="text-center mb-10">
-            <div className={`w-16 h-16 mx-auto rounded-2xl flex items-center justify-center mb-4 ${isAdmin ? 'bg-indigo-600' : 'bg-indigo-600 shadow-xl shadow-indigo-500/20'}`}>
-              <i className={`fa-solid ${isAdmin ? 'fa-lock' : 'fa-bolt'} text-3xl text-white`}></i>
+            <div className={`w-16 h-16 mx-auto rounded-2xl flex items-center justify-center mb-4 ${isAdmin ? 'bg-indigo-600 shadow-xl shadow-indigo-500/20' : 'bg-indigo-600 shadow-xl shadow-indigo-500/20'}`}>
+              <i className={`fa-solid ${isAdmin ? 'fa-user-shield' : 'fa-fingerprint'} text-3xl text-white`}></i>
             </div>
-            <h1 className="text-2xl font-bold mb-2">{isAdmin ? 'Nexo Admin' : 'Bem-vindo ao NEXO'}</h1>
+            <h1 className="text-2xl font-black mb-2">{isAdmin ? 'Nexo Control' : 'Acesse o Nexo App'}</h1>
             <p className={`text-sm ${isAdmin ? 'text-slate-400' : 'text-slate-500'}`}>
-              {isAdmin ? 'Insira suas credenciais de acesso restrito.' : 'Entre na sua conta para gerenciar suas finanças.'}
+              {isAdmin ? 'Identifique-se para acessar o painel de mestre.' : 'Insira suas credenciais para gerenciar sua carteira.'}
             </p>
           </div>
 
           <form onSubmit={isAdmin ? handleAdminLogin : handleUserLogin} className="space-y-4">
             {error && (
-              <div className="p-3 rounded-lg bg-rose-50 text-rose-600 text-xs font-bold flex items-center gap-2 border border-rose-100 animate-shake">
-                <i className="fa-solid fa-circle-exclamation"></i>
+              <div className="p-3 rounded-xl bg-rose-50 text-rose-600 text-xs font-bold flex items-center gap-2 border border-rose-100 animate-bounce">
+                <i className="fa-solid fa-circle-exclamation text-sm"></i>
                 {error}
               </div>
             )}
             <div>
-              <label className={`block text-xs font-bold uppercase tracking-wider mb-1.5 ${isAdmin ? 'text-slate-400' : 'text-slate-500'}`}>E-mail</label>
+              <label className={`block text-xs font-bold uppercase tracking-wider mb-2 ${isAdmin ? 'text-slate-400' : 'text-slate-500'}`}>Email Corporativo</label>
               <input 
                 required
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                placeholder={isAdmin ? 'admin@nexo.com' : 'seu@email.com'}
-                className={`w-full px-4 py-3 rounded-xl outline-none focus:ring-2 transition-all ${isAdmin ? 'bg-slate-800 border-slate-700 text-white focus:ring-indigo-500' : 'bg-slate-50 border border-slate-200 text-slate-900 focus:ring-indigo-500'}`}
+                placeholder={isAdmin ? 'admin@nexo.com' : 'usuario@exemplo.com'}
+                className={`w-full px-5 py-3.5 rounded-2xl outline-none focus:ring-2 transition-all ${isAdmin ? 'bg-slate-800 border-slate-700 text-white focus:ring-indigo-500' : 'bg-slate-100 border-transparent text-slate-900 focus:ring-indigo-500'}`}
               />
             </div>
             <div>
-              <label className={`block text-xs font-bold uppercase tracking-wider mb-1.5 ${isAdmin ? 'text-slate-400' : 'text-slate-500'}`}>Senha</label>
+              <label className={`block text-xs font-bold uppercase tracking-wider mb-2 ${isAdmin ? 'text-slate-400' : 'text-slate-500'}`}>Chave de Acesso</label>
               <input 
                 required
                 type="password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 placeholder="********"
-                className={`w-full px-4 py-3 rounded-xl outline-none focus:ring-2 transition-all ${isAdmin ? 'bg-slate-800 border-slate-700 text-white focus:ring-indigo-500' : 'bg-slate-50 border border-slate-200 text-slate-900 focus:ring-indigo-500'}`}
+                className={`w-full px-5 py-3.5 rounded-2xl outline-none focus:ring-2 transition-all ${isAdmin ? 'bg-slate-800 border-slate-700 text-white focus:ring-indigo-500' : 'bg-slate-100 border-transparent text-slate-900 focus:ring-indigo-500'}`}
               />
             </div>
             
-            {!isAdmin && (
-              <div className="flex justify-between items-center text-xs">
-                <label className="flex items-center gap-2 text-slate-500 cursor-pointer">
-                  <input type="checkbox" className="rounded text-indigo-600 focus:ring-indigo-500" />
-                  Lembrar-me
-                </label>
-                <a href="#" className="text-indigo-600 font-bold hover:underline">Esqueci minha senha</a>
-              </div>
-            )}
-
-            <Button variant="primary" size="lg" className="w-full h-12 mt-4" loading={isLoading}>
-              Entrar
+            <Button variant="primary" size="lg" className="w-full h-14 mt-6 text-lg rounded-2xl" loading={isLoading}>
+              Autenticar
             </Button>
           </form>
 
           {isAdmin && (
-            <p className="mt-8 text-center text-[10px] text-slate-500 uppercase tracking-widest">
-              Acesso exclusivo para funcionários autorizados.
-            </p>
+            <div className="mt-8 pt-6 border-t border-slate-800">
+              <p className="text-center text-[10px] text-slate-500 uppercase tracking-[0.2em] font-bold">
+                Criptografia RSA 4096-bit Ativa
+              </p>
+            </div>
           )}
         </div>
       </div>
     );
   }
 
+  // DASHBOARDS
   if (currentRoute === AppRoute.APP_DASHBOARD && currentUser) {
     return <AppDashboard user={currentUser} onLogout={handleLogout} />;
   }
