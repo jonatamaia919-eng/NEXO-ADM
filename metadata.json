@@ -1,0 +1,5 @@
+{
+  "name": "Nexo Ecosystem",
+  "description": "A dual-app ecosystem consisting of Nexo App (User Dashboard) and Nexo Admin (User Management), featuring shared local storage persistence and advanced financial visualizations.",
+  "requestFramePermissions": []
+}
