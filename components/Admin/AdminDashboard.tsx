@@ -11,7 +11,7 @@ export const AdminDashboard: React.FC<{ onLogout: () => void }> = ({ onLogout })
 
   const fetchUsers = () => {
     const data = storageService.getUsers();
-    setUsers([...data]); // Força nova referência para o React detectar mudança
+    setUsers([...data]);
   };
 
   useEffect(() => {
@@ -23,136 +23,125 @@ export const AdminDashboard: React.FC<{ onLogout: () => void }> = ({ onLogout })
     fetchUsers();
   };
 
-  const handleToggleRole = (user: User) => {
-    const newRole = user.role === 'admin' ? 'user' : 'admin';
-    storageService.updateUser({ ...user, role: newRole });
-    fetchUsers();
-  };
-
   const handleDelete = (id: string) => {
-    if (window.confirm('Atenção: Esta ação é irreversível! O usuário será removido permanentemente. Prosseguir?')) {
+    if (window.confirm('Excluir este acesso permanentemente?')) {
       storageService.deleteUser(id);
       fetchUsers();
     }
   };
 
   const handleResetPassword = (id: string) => {
-    const newPass = window.prompt('Digite a nova senha de acesso:');
-    if (newPass !== null) {
-      if (newPass.trim().length >= 4) {
-        storageService.resetPassword(id, newPass.trim());
-        alert('Chave de acesso redefinida com sucesso.');
-        fetchUsers();
-      } else {
-        alert('A senha deve ter pelo menos 4 caracteres.');
-      }
+    const newPass = window.prompt('Nova senha para este usuário:');
+    if (newPass && newPass.trim().length >= 4) {
+      storageService.resetPassword(id, newPass.trim());
+      alert('Senha atualizada.');
+      fetchUsers();
     }
   };
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans">
-      <nav className="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center sticky top-0 z-10 shadow-sm">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center">
+      <nav className="bg-white border-b border-slate-200 px-8 py-5 flex justify-between items-center sticky top-0 z-30 shadow-sm">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 bg-slate-900 rounded-[1.25rem] flex items-center justify-center shadow-xl">
             <i className="fa-solid fa-shield-halved text-white text-xl"></i>
           </div>
-          <span className="text-xl font-black tracking-tight text-slate-900 uppercase">Nexo <span className="text-indigo-600">Console</span></span>
-        </div>
-        <div className="flex items-center gap-4">
-          <div className="hidden md:flex flex-col items-end mr-2">
-            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Sessão Ativa</span>
-            <span className="text-xs font-bold text-slate-700">Administrador Master</span>
+          <div>
+            <span className="text-2xl font-black tracking-tighter text-slate-900 uppercase leading-none block">NEXO</span>
+            <span className="text-[10px] font-black text-purple-600 tracking-widest uppercase">Admin Console</span>
           </div>
-          <Button variant="ghost" className="text-rose-600 font-bold hover:bg-rose-50 px-4 py-2 rounded-xl" onClick={onLogout}>
-            Sair
+        </div>
+        <div className="flex items-center gap-6">
+          <div className="hidden md:flex flex-col items-end">
+            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Sessão Segura</span>
+            <span className="text-xs font-bold text-slate-900">Proprietário Nexo</span>
+          </div>
+          <Button variant="ghost" className="text-rose-600 font-black hover:bg-rose-50 px-6 py-3 rounded-xl border-transparent" onClick={onLogout}>
+            Sair do Console
           </Button>
         </div>
       </nav>
 
-      <main className="flex-1 p-6 md:p-10 max-w-7xl mx-auto w-full">
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10">
+      <main className="flex-1 p-6 md:p-12 max-w-7xl mx-auto w-full">
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
           <div>
-            <h1 className="text-4xl font-black mb-2 text-slate-900 tracking-tight">Gestão de Usuários</h1>
-            <p className="text-slate-500 font-medium">Configure acessos e permissões dos usuários do ecossistema.</p>
+            <h1 className="text-5xl font-black mb-2 text-slate-900 tracking-tighter">Gestão de Acessos</h1>
+            <p className="text-slate-500 font-medium text-lg">Crie e gerencie os usuários autorizados do sistema.</p>
           </div>
-          <Button variant="primary" size="lg" className="rounded-2xl shadow-xl shadow-indigo-100 px-8 h-14 font-black" onClick={() => setIsModalOpen(true)}>
-            <i className="fa-solid fa-plus mr-2"></i>
-            Novo Usuário
+          <Button variant="primary" size="lg" className="rounded-2xl shadow-2xl shadow-purple-200 bg-purple-600 px-10 h-16 font-black text-lg" onClick={() => setIsModalOpen(true)}>
+            <i className="fa-solid fa-user-plus mr-3"></i>
+            Liberar Novo Acesso
           </Button>
         </header>
 
-        <div className="bg-white rounded-[2.5rem] shadow-2xl shadow-slate-200 border border-slate-100 overflow-hidden">
+        <div className="bg-white rounded-[3rem] shadow-2xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-100">
-                  <th className="px-8 py-6 font-black text-slate-400 text-[10px] uppercase tracking-[0.2em]">Identificação</th>
-                  <th className="px-8 py-6 font-black text-slate-400 text-[10px] uppercase tracking-[0.2em]">Permissão</th>
-                  <th className="px-8 py-6 font-black text-slate-400 text-[10px] uppercase tracking-[0.2em]">Status</th>
-                  <th className="px-8 py-6 font-black text-slate-400 text-[10px] uppercase tracking-[0.2em] text-right">Ações</th>
+                  <th className="px-10 py-8 font-black text-slate-400 text-[10px] uppercase tracking-[0.25em]">Membro Autorizado</th>
+                  <th className="px-10 py-8 font-black text-slate-400 text-[10px] uppercase tracking-[0.25em]">Permissão</th>
+                  <th className="px-10 py-8 font-black text-slate-400 text-[10px] uppercase tracking-[0.25em]">Status</th>
+                  <th className="px-10 py-8 font-black text-slate-400 text-[10px] uppercase tracking-[0.25em] text-right">Ações</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-50">
                 {users.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="px-8 py-20 text-center text-slate-400 font-bold italic">Nenhum registro encontrado no sistema.</td>
+                    <td colSpan={4} className="px-10 py-32 text-center">
+                      <i className="fa-solid fa-users-slash text-5xl text-slate-100 mb-6 block"></i>
+                      <p className="text-slate-400 font-black uppercase text-xs tracking-widest">Nenhum acesso cadastrado</p>
+                    </td>
                   </tr>
                 ) : (
                   users.map(user => (
-                    <tr key={user.id} className="hover:bg-slate-50/80 transition-all group">
-                      <td className="px-8 py-6">
-                        <div className="flex items-center gap-4">
-                          <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-black text-lg transition-transform group-hover:scale-105 ${user.role === 'admin' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-100' : 'bg-slate-100 text-slate-600'}`}>
+                    <tr key={user.id} className="hover:bg-slate-50/50 transition-all group">
+                      <td className="px-10 py-8">
+                        <div className="flex items-center gap-5">
+                          <div className={`w-14 h-14 rounded-2xl flex items-center justify-center font-black text-xl shadow-sm transition-transform group-hover:scale-110 ${user.role === 'admin' ? 'bg-slate-900 text-white' : 'bg-purple-100 text-purple-700'}`}>
                             {user.name.charAt(0)}
                           </div>
                           <div>
-                            <p className="font-black text-slate-900 text-base">{user.name}</p>
-                            <p className="text-xs font-bold text-slate-400 uppercase tracking-tight">{user.email}</p>
+                            <p className="font-black text-slate-900 text-lg leading-none mb-1">{user.name}</p>
+                            <p className="text-xs font-black text-slate-400 uppercase tracking-tighter">{user.email}</p>
                           </div>
                         </div>
                       </td>
-                      <td className="px-8 py-6">
-                        <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ${user.role === 'admin' ? 'bg-indigo-50 text-indigo-700 border border-indigo-100' : 'bg-slate-100 text-slate-500'}`}>
+                      <td className="px-10 py-8">
+                        <span className={`px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest ${user.role === 'admin' ? 'bg-slate-900 text-white' : 'bg-purple-50 text-purple-700 border border-purple-100'}`}>
                           {user.role === 'admin' ? 'Master' : 'Membro'}
                         </span>
                       </td>
-                      <td className="px-8 py-6">
-                        <div className="flex items-center gap-2">
-                          <span className={`w-2 h-2 rounded-full ${user.active ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'}`}></span>
+                      <td className="px-10 py-8">
+                        <div className="flex items-center gap-3">
+                          <span className={`w-3 h-3 rounded-full ${user.active ? 'bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]' : 'bg-rose-500'}`}></span>
                           <span className={`text-[10px] font-black uppercase tracking-widest ${user.active ? 'text-emerald-600' : 'text-rose-600'}`}>
-                            {user.active ? 'Ativo' : 'Inativo'}
+                            {user.active ? 'Liberado' : 'Bloqueado'}
                           </span>
                         </div>
                       </td>
-                      <td className="px-8 py-6 text-right">
-                        <div className="flex justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+                      <td className="px-10 py-8 text-right">
+                        <div className="flex justify-end gap-3 opacity-60 group-hover:opacity-100 transition-all">
                           <button 
-                            title="Alterar Permissão"
-                            onClick={() => handleToggleRole(user)}
-                            className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-indigo-600 hover:bg-indigo-600 hover:text-white transition-all shadow-sm"
-                          >
-                            <i className="fa-solid fa-user-shield text-xs"></i>
-                          </button>
-                          <button 
-                            title={user.active ? "Bloquear" : "Desbloquear"}
-                            onClick={() => handleToggleStatus(user.id)}
-                            className={`w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center transition-all shadow-sm ${user.active ? 'text-amber-600 hover:bg-amber-500 hover:text-white' : 'text-emerald-600 hover:bg-emerald-500 hover:text-white'}`}
-                          >
-                            <i className={`fa-solid ${user.active ? 'fa-lock' : 'fa-unlock'} text-xs`}></i>
-                          </button>
-                          <button 
-                            title="Resetar Senha"
+                            title="Resetar Chave"
                             onClick={() => handleResetPassword(user.id)}
-                            className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-900 hover:text-white transition-all shadow-sm"
+                            className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-900 hover:text-white transition-all shadow-sm"
                           >
-                            <i className="fa-solid fa-key text-xs"></i>
+                            <i className="fa-solid fa-key"></i>
                           </button>
                           <button 
-                            title="Excluir Permanentemente"
-                            onClick={() => handleDelete(user.id)}
-                            className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-rose-600 hover:bg-rose-600 hover:text-white transition-all shadow-sm"
+                            title={user.active ? "Suspender Acesso" : "Ativar Acesso"}
+                            onClick={() => handleToggleStatus(user.id)}
+                            className={`w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center transition-all shadow-sm ${user.active ? 'text-amber-600 hover:bg-amber-500 hover:text-white' : 'text-emerald-600 hover:bg-emerald-500 hover:text-white'}`}
                           >
-                            <i className="fa-solid fa-trash-can text-xs"></i>
+                            <i className={`fa-solid ${user.active ? 'fa-user-lock' : 'fa-user-check'}`}></i>
+                          </button>
+                          <button 
+                            title="Remover Permanentemente"
+                            onClick={() => handleDelete(user.id)}
+                            className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-rose-600 hover:bg-rose-600 hover:text-white transition-all shadow-sm"
+                          >
+                            <i className="fa-solid fa-trash-can"></i>
                           </button>
                         </div>
                       </td>
