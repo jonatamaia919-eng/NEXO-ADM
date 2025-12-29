@@ -1,6 +1,6 @@
 
-import { User } from '../types';
-import { STORAGE_KEYS } from '../constants';
+import { User, AppTheme } from '../types';
+import { STORAGE_KEYS, DEFAULT_THEME } from '../constants';
 
 export const storageService = {
   getUsers: (): User[] => {
@@ -14,7 +14,6 @@ export const storageService = {
 
   createUser: (user: User) => {
     const users = storageService.getUsers();
-    // Prevenção de duplicatas simples
     if (users.some(u => u.email === user.email)) {
       alert('E-mail já cadastrado no sistema.');
       return;
@@ -53,7 +52,6 @@ export const storageService = {
     const filtered = users.filter(u => u.id !== id);
     storageService.setUsers(filtered);
     
-    // Se o usuário deletado for o da sessão atual, encerra a sessão
     const currentSession = storageService.getSession();
     if (currentSession && currentSession.id === id) {
       storageService.clearSession();
@@ -80,5 +78,14 @@ export const storageService = {
   getAdminSession: (): boolean => {
     const data = localStorage.getItem(STORAGE_KEYS.ADMIN_SESSION);
     return data ? JSON.parse(data) : false;
+  },
+
+  getTheme: (): AppTheme => {
+    const data = localStorage.getItem(STORAGE_KEYS.THEME);
+    return data ? JSON.parse(data) : DEFAULT_THEME;
+  },
+
+  setTheme: (theme: AppTheme) => {
+    localStorage.setItem(STORAGE_KEYS.THEME, JSON.stringify(theme));
   }
 };

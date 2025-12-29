@@ -8,17 +8,15 @@ export const STORAGE_KEYS = {
   USER_SESSION: "nexo_session",
   ADMIN_SESSION: "nexo_admin_session",
   ACCOUNTS: "nexo_accounts_v1",
-  TRANSACTIONS: "nexo_transactions_v1"
+  TRANSACTIONS: "nexo_transactions_v1",
+  THEME: "nexo_theme_config"
 };
 
-export const PURPLE_PALETTE = {
-  primary: "#6d28d9", // Roxo vibrante
-  secondary: "#4c1d95", // Roxo escuro
-  accent: "#a78bfa", // Lilás
-  light: "#f5f3ff" // Fundo lilás clarinho
+export const DEFAULT_THEME = {
+  primary: "#6d28d9", // Roxo original
+  secondary: "#4c1d95" // Roxo escuro original
 };
 
-// Fix: Added missing mock data required for dashboard visualization
 export const MOCK_CHART_DATA = [
   { name: 'Jan', value: 4000 },
   { name: 'Fev', value: 3000 },

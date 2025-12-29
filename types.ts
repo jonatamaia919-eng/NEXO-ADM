@@ -11,6 +11,11 @@ export interface User {
   onboardingComplete?: boolean;
 }
 
+export interface AppTheme {
+  primary: string;
+  secondary: string;
+}
+
 export enum AppRoute {
   SWITCHER = 'SWITCHER',
   LOGIN = 'LOGIN',
